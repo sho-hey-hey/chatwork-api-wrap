@@ -12,6 +12,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "chatwork",
+    "api"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shoheiono/chatwork-api-wrap.git"
