@@ -1,6 +1,6 @@
 {
   "name": "chatwork-api-wrap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Chatwork api wrapper.",
   "main": "src/index.js",
   "author": "ShoheiOno",
