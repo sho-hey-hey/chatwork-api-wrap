@@ -1,5 +1,5 @@
 {
-  "name": "chatwork-api",
+  "name": "chatwork-api-wrap",
   "version": "0.1.0",
   "description": "Chatwork api wrapper.",
   "main": "src/index.js",
@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shoheiono/chatwork-api.git"
+    "url": "git+https://github.com/shoheiono/chatwork-api-wrap.git"
   },
   "bugs": {
-    "url": "https://github.com/shoheiono/chatwork-api/issues"
+    "url": "https://github.com/shoheiono/chatwork-api-wrap/issues"
   },
-  "homepage": "https://github.com/shoheiono/chatwork-api#readme"
+  "homepage": "https://github.com/shoheiono/chatwork-api-wrap#readme"
 }
