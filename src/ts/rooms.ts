@@ -1,16 +1,35 @@
-const request = require('superagent');
-const { BASE_URI, CHATWORK_TOKEN } = require('./constants');
-const { requestSuccess, requestError, objectToQuery } = require('./service');
+import request from "superagent";
+import { BASE_URI, CHATWORK_TOKEN } from "./constants";
+import { objectToQuery, requestError, requestSuccess } from "./service";
+
+type DeleteActionType = "leave" | "delete";
+
+// tslint:disable:no-empty-interface
+interface RoomsPostOptions { }
+interface RoomsPutWithIdOptions { }
+interface RoomsMembersPutOptions { }
+interface RoomsMessagesGetOptions { }
+interface RoomsMessagesPostOptions { }
+interface RoomsMessagesReadPutOptions { }
+interface RoomsTasksGetOptions { }
+interface RoomsTasksPostOptions { }
+interface RoomsFilesGetOptions { }
+interface RoomsFilesPostOptions { }
+interface RoomsFilesGetWithIdOptions { }
+interface RoomsLinkPostOptions { }
+interface RoomsLinkPutOptions { }
+// tslint:enable:no-empty-interface
+
 const BASE_ROOMS_URI = `${BASE_URI}rooms`;
 
-async function get(apiToken) {
+export async function get(apiToken: string) {
     return request
         .get(BASE_ROOMS_URI)
         .set(CHATWORK_TOKEN, apiToken)
         .then(requestSuccess)
         .catch(requestError);
 }
-async function post(apiToken, name, members_admin_ids, options) {
+export async function post(apiToken: string, name: string, members_admin_ids: number[], options: RoomsPostOptions) {
     return request
         .post(BASE_ROOMS_URI)
         .set(CHATWORK_TOKEN, apiToken)
@@ -18,14 +37,14 @@ async function post(apiToken, name, members_admin_ids, options) {
         .then(requestSuccess)
         .catch(requestError);
 }
-async function getWithId(apiToken, room_id) {
+export async function getWithId(apiToken: string, room_id: number) {
     return request
         .get(`${BASE_ROOMS_URI}/${room_id}`)
         .set(CHATWORK_TOKEN, apiToken)
         .then(requestSuccess)
         .catch(requestError);
 }
-async function putWithId(apiToken, room_id, options) {
+export async function putWithId(apiToken: string, room_id: number, options: RoomsPutWithIdOptions) {
     return request
         .post(`${BASE_ROOMS_URI}/${room_id}`)
         .set(CHATWORK_TOKEN, apiToken)
@@ -33,7 +52,7 @@ async function putWithId(apiToken, room_id, options) {
         .then(requestSuccess)
         .catch(requestError);
 }
-async function deleteWithId(apiToken, room_id, action_type) {
+export async function deleteWithId(apiToken: string, room_id: number, action_type: DeleteActionType) {
     return request
         .delete(`${BASE_ROOMS_URI}/${room_id}`)
         .set(CHATWORK_TOKEN, apiToken)
@@ -42,15 +61,15 @@ async function deleteWithId(apiToken, room_id, action_type) {
         .catch(requestError);
 }
 
-const members = {
-    get: async (apiToken, room_id) => {
+export const members = {
+    get: async (apiToken: string, room_id: number) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/members`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-    put: async (apiToken, room_id, members_admin_ids, options) => {
+    put: async (apiToken: string, room_id: number, members_admin_ids: number[], options: RoomsMembersPutOptions) => {
         return request
             .put(`${BASE_ROOMS_URI}/${room_id}/members`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -60,15 +79,15 @@ const members = {
     },
 };
 
-const messages = {
-    get: async (apiToken, room_id, options) => {
+export const messages = {
+    get: async (apiToken: string, room_id: number, options: RoomsMessagesGetOptions) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/messages${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-    post: async (apiToken, room_id, body, options) => {
+    post: async (apiToken: string, room_id: number, body: string, options: RoomsMessagesPostOptions) => {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/messages`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -77,7 +96,7 @@ const messages = {
             .catch(requestError);
     },
     read: {
-        put: async (apiToken, room_id, options) => {
+        put: async (apiToken: string, room_id: number, options: RoomsMessagesReadPutOptions) => {
             return request
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/read`)
                 .set(CHATWORK_TOKEN, apiToken)
@@ -87,7 +106,7 @@ const messages = {
         },
     },
     unread: {
-        put: async (apiToken, room_id, message_id) => {
+        put: async (apiToken: string, room_id: number, message_id: string) => {
             return request
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/unread`)
                 .set(CHATWORK_TOKEN, apiToken)
@@ -96,14 +115,14 @@ const messages = {
                 .catch(requestError);
         },
     },
-    getWithId: async (apiToken, room_id, message_id) => {
+    getWithId: async (apiToken: string, room_id: number, message_id: string) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-    putWithId: async (apiToken, room_id, message_id, body) => {
+    putWithId: async (apiToken: string, room_id: number, message_id: string, body: string) => {
         return request
             .put(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -111,7 +130,7 @@ const messages = {
             .then(requestSuccess)
             .catch(requestError);
     },
-    deleteWithId: async (apiToken, room_id, message_id) => {
+    deleteWithId: async (apiToken: string, room_id: number, message_id: string) => {
         return request
             .delete(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -120,15 +139,15 @@ const messages = {
     },
 };
 
-const tasks = {
-    get: async (apiToken, room_id, options) => {
+export const tasks = {
+    get: async (apiToken: string, room_id: number, options: RoomsTasksGetOptions) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/tasks${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-    post: async (apiToken, room_id, body, to_ids, options) => {
+    post: async (apiToken: string, room_id: number, body: string, to_ids: number[], options: RoomsTasksPostOptions) => {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/tasks`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -136,24 +155,24 @@ const tasks = {
             .then(requestSuccess)
             .catch(requestError);
     },
-    getWithId: async (apiToken, room_id, task_id) => {
+    getWithId: async (apiToken: string, room_id: number, task_id: string) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/tasks/${task_id}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-}
+};
 
-const files = {
-    get: async (apiToken, room_id, options) => {
+export const files = {
+    get: async (apiToken: string, room_id: number, options: RoomsFilesGetOptions) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/files${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-    post: async (apiToken, room_id, file, options) => {
+    post: async (apiToken: string, room_id: number, file: File, options: RoomsFilesPostOptions) => {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/files`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -161,24 +180,24 @@ const files = {
             .then(requestSuccess)
             .catch(requestError);
     },
-    getWithId: async (apiToken, room_id, file_id, options) => {
+    getWithId: async (apiToken: string, room_id: number, file_id: string, options: RoomsFilesGetWithIdOptions) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-}
+};
 
-const link = {
-    get: async (apiToken, room_id) => {
+export const link = {
+    get: async (apiToken: string, room_id: string) => {
         return request
             .get(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-    post: async (apiToken, room_id, options) => {
+    post: async (apiToken: string, room_id: number, options: RoomsLinkPostOptions) => {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -186,7 +205,7 @@ const link = {
             .then(requestSuccess)
             .catch(requestError);
     },
-    put: async (apiToken, room_id, options) => {
+    put: async (apiToken: string, room_id: number, options: RoomsLinkPutOptions) => {
         return request
             .put(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(CHATWORK_TOKEN, apiToken)
@@ -194,24 +213,11 @@ const link = {
             .then(requestSuccess)
             .catch(requestError);
     },
-    delete: async (apiToken, room_id) => {
+    delete: async (apiToken: string, room_id: number) => {
         return request
             .delete(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
     },
-}
-
-module.exports = {
-    get,
-    post,
-    getWithId,
-    putWithId,
-    deleteWithId,
-    members,
-    messages,
-    tasks,
-    files,
-    link
 };
