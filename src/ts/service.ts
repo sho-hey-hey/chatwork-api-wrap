@@ -9,7 +9,7 @@ export const requestSuccess = <T>(res: Response) => {
 };
 
 export const requestError = (err: ResponseError) => {
-    return err;
+    throw err;
 };
 
 export const objectToQuery = (obj: object & { [key: string]: any }) => {
