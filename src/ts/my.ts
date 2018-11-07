@@ -1,10 +1,11 @@
 import request from "superagent";
-import { BASE_URI, CHATWORK_TOKEN } from "./constants";
+import { BASE_URI, CHATWORK_TOKEN, TaskStatus } from "./constants";
 import { objectToQuery, requestError, requestSuccess } from "./service";
 
-// tslint:disable:no-empty-interface
-interface MyTaskGetOptions { }
-// tslint:enable:no-empty-interface
+interface MyTaskGetOptions {
+    assigned_by_account_id?: number;
+    status?: TaskStatus;
+}
 
 const BASE_MY_URI = `${BASE_URI}my`;
 
@@ -19,7 +20,7 @@ export const status = {
 };
 
 export const tasks = {
-    get: async (apiToken: string, options: MyTaskGetOptions) => {
+    get: async (apiToken: string, options: MyTaskGetOptions = {}) => {
         return request
             .get(`${BASE_MY_URI}/tasks${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
