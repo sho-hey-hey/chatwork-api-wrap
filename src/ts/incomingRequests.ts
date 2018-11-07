@@ -1,9 +1,10 @@
-const request = require('superagent');
-const { BASE_URI, CHATWORK_TOKEN } = require('./constants');
-const { requestSuccess, requestError } = require('./service');
+import request from "superagent";
+import { BASE_URI, CHATWORK_TOKEN } from "./constants";
+import { requestError, requestSuccess } from "./service";
+
 const BASE_INCOMING_REQUESTS_URI = `${BASE_URI}incoming_requests`;
 
-async function get(apiToken) {
+export async function get(apiToken: string) {
     return request
         .get(BASE_INCOMING_REQUESTS_URI)
         .set(CHATWORK_TOKEN, apiToken)
@@ -11,7 +12,7 @@ async function get(apiToken) {
         .catch(requestError);
 }
 
-async function putWithId(apiToken, request_id) {
+export async function putWithId(apiToken: string, request_id: string) {
     return request
         .put(`${BASE_INCOMING_REQUESTS_URI}/${request_id}`)
         .set(CHATWORK_TOKEN, apiToken)
@@ -19,16 +20,10 @@ async function putWithId(apiToken, request_id) {
         .catch(requestError);
 }
 
-async function deleteWithId(apiToken, request_id) {
+export async function deleteWithId(apiToken: string, request_id: string) {
     return request
         .delete(`${BASE_INCOMING_REQUESTS_URI}/${request_id}`)
         .set(CHATWORK_TOKEN, apiToken)
         .then(requestSuccess)
         .catch(requestError);
 }
-
-module.exports = {
-    get,
-    putWithId,
-    deleteWithId,
-};
