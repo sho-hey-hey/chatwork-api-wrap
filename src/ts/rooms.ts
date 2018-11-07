@@ -72,7 +72,7 @@ export async function post(
     return request
         .post(BASE_ROOMS_URI)
         .set(CHATWORK_TOKEN, apiToken)
-        .send({ name, members_admin_ids, ...options })
+        .send(objectToQuery({ name, members_admin_ids, ...options }))
         .then(requestSuccess)
         .catch(requestError);
 }
@@ -87,7 +87,7 @@ export async function putWithId(apiToken: string, room_id: number, options: Room
     return request
         .post(`${BASE_ROOMS_URI}/${room_id}`)
         .set(CHATWORK_TOKEN, apiToken)
-        .send({ ...options })
+        .send(objectToQuery({ ...options }))
         .then(requestSuccess)
         .catch(requestError);
 }
@@ -95,7 +95,7 @@ export async function deleteWithId(apiToken: string, room_id: number, action_typ
     return request
         .delete(`${BASE_ROOMS_URI}/${room_id}`)
         .set(CHATWORK_TOKEN, apiToken)
-        .send({ action_type })
+        .send(objectToQuery({ action_type }))
         .then(requestSuccess)
         .catch(requestError);
 }
@@ -114,7 +114,7 @@ export const members = {
         return request
             .put(`${BASE_ROOMS_URI}/${room_id}/members`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ members_admin_ids, ...options })
+            .send(objectToQuery({ members_admin_ids, ...options }))
             .then(requestSuccess)
             .catch(requestError);
     },
@@ -123,7 +123,7 @@ export const members = {
 export const messages = {
     get: async (apiToken: string, room_id: number, options: RoomsMessagesGetOptions = {}) => {
         return request
-            .get(`${BASE_ROOMS_URI}/${room_id}/messages${objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/messages?${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
@@ -132,7 +132,7 @@ export const messages = {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/messages`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ body, ...options })
+            .send(objectToQuery({ body, ...options }))
             .then(requestSuccess)
             .catch(requestError);
     },
@@ -140,8 +140,7 @@ export const messages = {
         put: async (apiToken: string, room_id: number, options: RoomsMessagesReadPutOptions = {}) => {
             return request
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/read`)
-                .set(CHATWORK_TOKEN, apiToken)
-                .send({ ...options })
+                .send(objectToQuery({ ...options }))
                 .then(requestSuccess)
                 .catch(requestError);
         },
@@ -151,7 +150,7 @@ export const messages = {
             return request
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/unread`)
                 .set(CHATWORK_TOKEN, apiToken)
-                .send({ message_id })
+                .send(objectToQuery({ message_id }))
                 .then(requestSuccess)
                 .catch(requestError);
         },
@@ -167,7 +166,7 @@ export const messages = {
         return request
             .put(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ body })
+            .send(objectToQuery({ body }))
             .then(requestSuccess)
             .catch(requestError);
     },
@@ -183,7 +182,7 @@ export const messages = {
 export const tasks = {
     get: async (apiToken: string, room_id: number, options: RoomsTasksGetOptions = {}) => {
         return request
-            .get(`${BASE_ROOMS_URI}/${room_id}/tasks${objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/tasks?${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
@@ -194,7 +193,7 @@ export const tasks = {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/tasks`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ body, to_ids, ...options })
+            .send(objectToQuery({ body, to_ids, ...options }))
             .then(requestSuccess)
             .catch(requestError);
     },
@@ -210,7 +209,7 @@ export const tasks = {
 export const files = {
     get: async (apiToken: string, room_id: number, options: RoomsFilesGetOptions = {}) => {
         return request
-            .get(`${BASE_ROOMS_URI}/${room_id}/files${objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/files?${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
@@ -219,13 +218,13 @@ export const files = {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/files`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ file, ...options })
+            .send(objectToQuery({ file, ...options }))
             .then(requestSuccess)
             .catch(requestError);
     },
     getWithId: async (apiToken: string, room_id: number, file_id: string, options: RoomsFilesGetWithIdOptions = {}) => {
         return request
-            .get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}${objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}?${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);
@@ -244,7 +243,7 @@ export const link = {
         return request
             .post(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ ...options })
+            .send(objectToQuery({ ...options }))
             .then(requestSuccess)
             .catch(requestError);
     },
@@ -252,7 +251,7 @@ export const link = {
         return request
             .put(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(CHATWORK_TOKEN, apiToken)
-            .send({ ...options })
+            .send(objectToQuery({ ...options }))
             .then(requestSuccess)
             .catch(requestError);
     },

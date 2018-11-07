@@ -22,7 +22,7 @@ export const status = {
 export const tasks = {
     get: async (apiToken: string, options: MyTaskGetOptions = {}) => {
         return request
-            .get(`${BASE_MY_URI}/tasks${objectToQuery(options)}`)
+            .get(`${BASE_MY_URI}/tasks?${objectToQuery(options)}`)
             .set(CHATWORK_TOKEN, apiToken)
             .then(requestSuccess)
             .catch(requestError);

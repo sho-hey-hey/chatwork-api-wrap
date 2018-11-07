@@ -18,10 +18,14 @@ export const objectToQuery = (obj: object & { [key: string]: any }) => {
         .filter((k) => obj[k] !== undefined)
         .map((k) => {
             const value = obj[k];
-            const v = typeof value === "boolean" ? +value : value;
-            return `${k}=${v}`;
+            const v = typeof value === "boolean"
+                ? +value
+                : Array.isArray(value)
+                    ? value.join(",")
+                    : value;
+            return `${k}=${encodeURIComponent(v)}`;
         })
         .join("&");
 
-    return `?${query}`;
+    return query;
 };
