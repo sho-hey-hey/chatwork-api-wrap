@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "lib": [
+      "dom",
+      "es2015",
+      "scripthost"
+    ],
+    "declaration": true,
+    "declarationDir": "./src/typings",
+    "sourceMap": false,
+    "outDir": "./src/js",
+    "rootDir": "./src/ts",
+    "removeComments": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "baseUrl": "./src/",
+    "esModuleInterop": true
+  }
+}
