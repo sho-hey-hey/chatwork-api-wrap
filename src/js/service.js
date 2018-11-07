@@ -8,7 +8,7 @@ exports.requestSuccess = (res) => {
     return null;
 };
 exports.requestError = (err) => {
-    return err;
+    throw err;
 };
 exports.objectToQuery = (obj) => {
     const keys = Object.keys(obj);
@@ -16,9 +16,13 @@ exports.objectToQuery = (obj) => {
         .filter((k) => obj[k] !== undefined)
         .map((k) => {
         const value = obj[k];
-        const v = typeof value === "boolean" ? +value : value;
-        return `${k}=${v}`;
+        const v = typeof value === "boolean"
+            ? +value
+            : Array.isArray(value)
+                ? value.join(",")
+                : value;
+        return `${k}=${encodeURIComponent(v)}`;
     })
         .join("&");
-    return `?${query}`;
+    return query;
 };

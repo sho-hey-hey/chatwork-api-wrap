@@ -25,9 +25,9 @@ exports.status = {
     }),
 };
 exports.tasks = {
-    get: (apiToken, options) => __awaiter(this, void 0, void 0, function* () {
+    get: (apiToken, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
-            .get(`${BASE_MY_URI}/tasks${service_1.objectToQuery(options)}`)
+            .get(`${BASE_MY_URI}/tasks?${service_1.objectToQuery(options)}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);

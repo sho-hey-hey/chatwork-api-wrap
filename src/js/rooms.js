@@ -25,12 +25,12 @@ function get(apiToken) {
     });
 }
 exports.get = get;
-function post(apiToken, name, members_admin_ids, options) {
+function post(apiToken, name, members_admin_ids, options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .post(BASE_ROOMS_URI)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({ name, members_admin_ids }, options))
+            .send(service_1.objectToQuery(Object.assign({ name, members_admin_ids }, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     });
@@ -46,12 +46,12 @@ function getWithId(apiToken, room_id) {
     });
 }
 exports.getWithId = getWithId;
-function putWithId(apiToken, room_id, options) {
+function putWithId(apiToken, room_id, options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .post(`${BASE_ROOMS_URI}/${room_id}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({}, options))
+            .send(service_1.objectToQuery(Object.assign({}, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     });
@@ -62,7 +62,7 @@ function deleteWithId(apiToken, room_id, action_type) {
         return superagent_1.default
             .delete(`${BASE_ROOMS_URI}/${room_id}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send({ action_type })
+            .send(service_1.objectToQuery({ action_type }))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     });
@@ -76,37 +76,36 @@ exports.members = {
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    put: (apiToken, room_id, members_admin_ids, options) => __awaiter(this, void 0, void 0, function* () {
+    put: (apiToken, room_id, members_admin_ids, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .put(`${BASE_ROOMS_URI}/${room_id}/members`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({ members_admin_ids }, options))
+            .send(service_1.objectToQuery(Object.assign({ members_admin_ids }, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
 };
 exports.messages = {
-    get: (apiToken, room_id, options) => __awaiter(this, void 0, void 0, function* () {
+    get: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/messages${service_1.objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/messages?${service_1.objectToQuery(options)}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    post: (apiToken, room_id, body, options) => __awaiter(this, void 0, void 0, function* () {
+    post: (apiToken, room_id, body, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .post(`${BASE_ROOMS_URI}/${room_id}/messages`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({ body }, options))
+            .send(service_1.objectToQuery(Object.assign({ body }, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
     read: {
-        put: (apiToken, room_id, options) => __awaiter(this, void 0, void 0, function* () {
+        put: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
             return superagent_1.default
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/read`)
-                .set(constants_1.CHATWORK_TOKEN, apiToken)
-                .send(Object.assign({}, options))
+                .send(service_1.objectToQuery(Object.assign({}, options)))
                 .then(service_1.requestSuccess)
                 .catch(service_1.requestError);
         }),
@@ -116,7 +115,7 @@ exports.messages = {
             return superagent_1.default
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/unread`)
                 .set(constants_1.CHATWORK_TOKEN, apiToken)
-                .send({ message_id })
+                .send(service_1.objectToQuery({ message_id }))
                 .then(service_1.requestSuccess)
                 .catch(service_1.requestError);
         }),
@@ -132,7 +131,7 @@ exports.messages = {
         return superagent_1.default
             .put(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send({ body })
+            .send(service_1.objectToQuery({ body }))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
@@ -145,18 +144,18 @@ exports.messages = {
     }),
 };
 exports.tasks = {
-    get: (apiToken, room_id, options) => __awaiter(this, void 0, void 0, function* () {
+    get: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/tasks${service_1.objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/tasks?${service_1.objectToQuery(options)}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    post: (apiToken, room_id, body, to_ids, options) => __awaiter(this, void 0, void 0, function* () {
+    post: (apiToken, room_id, body, to_ids, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .post(`${BASE_ROOMS_URI}/${room_id}/tasks`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({ body, to_ids }, options))
+            .send(service_1.objectToQuery(Object.assign({ body, to_ids }, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
@@ -169,24 +168,24 @@ exports.tasks = {
     }),
 };
 exports.files = {
-    get: (apiToken, room_id, options) => __awaiter(this, void 0, void 0, function* () {
+    get: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/files${service_1.objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/files?${service_1.objectToQuery(options)}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    post: (apiToken, room_id, file, options) => __awaiter(this, void 0, void 0, function* () {
+    post: (apiToken, room_id, file, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .post(`${BASE_ROOMS_URI}/${room_id}/files`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({ file }, options))
+            .send(service_1.objectToQuery(Object.assign({ file }, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    getWithId: (apiToken, room_id, file_id, options) => __awaiter(this, void 0, void 0, function* () {
+    getWithId: (apiToken, room_id, file_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}${service_1.objectToQuery(options)}`)
+            .get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}?${service_1.objectToQuery(options)}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
@@ -200,19 +199,19 @@ exports.link = {
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    post: (apiToken, room_id, options) => __awaiter(this, void 0, void 0, function* () {
+    post: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .post(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({}, options))
+            .send(service_1.objectToQuery(Object.assign({}, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
-    put: (apiToken, room_id, options) => __awaiter(this, void 0, void 0, function* () {
+    put: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
             .put(`${BASE_ROOMS_URI}/${room_id}/link`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(Object.assign({}, options))
+            .send(service_1.objectToQuery(Object.assign({}, options)))
             .then(service_1.requestSuccess)
             .catch(service_1.requestError);
     }),
