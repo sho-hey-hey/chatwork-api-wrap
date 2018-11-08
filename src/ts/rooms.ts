@@ -85,7 +85,7 @@ export async function getWithId(apiToken: string, room_id: number) {
 }
 export async function putWithId(apiToken: string, room_id: number, options: RoomsPutWithIdOptions = {}) {
     return request
-        .post(`${BASE_ROOMS_URI}/${room_id}`)
+        .put(`${BASE_ROOMS_URI}/${room_id}`)
         .set(CHATWORK_TOKEN, apiToken)
         .send(objectToQuery({ ...options }))
         .then(requestSuccess)
@@ -140,6 +140,7 @@ export const messages = {
         put: async (apiToken: string, room_id: number, options: RoomsMessagesReadPutOptions = {}) => {
             return request
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/read`)
+                .set(CHATWORK_TOKEN, apiToken)
                 .send(objectToQuery({ ...options }))
                 .then(requestSuccess)
                 .catch(requestError);
