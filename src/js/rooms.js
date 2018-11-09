@@ -49,7 +49,7 @@ exports.getWithId = getWithId;
 function putWithId(apiToken, room_id, options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         return superagent_1.default
-            .post(`${BASE_ROOMS_URI}/${room_id}`)
+            .put(`${BASE_ROOMS_URI}/${room_id}`)
             .set(constants_1.CHATWORK_TOKEN, apiToken)
             .send(service_1.objectToQuery(Object.assign({}, options)))
             .then(service_1.requestSuccess)
@@ -105,6 +105,7 @@ exports.messages = {
         put: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
             return superagent_1.default
                 .put(`${BASE_ROOMS_URI}/${room_id}/messages/read`)
+                .set(constants_1.CHATWORK_TOKEN, apiToken)
                 .send(service_1.objectToQuery(Object.assign({}, options)))
                 .then(service_1.requestSuccess)
                 .catch(service_1.requestError);
