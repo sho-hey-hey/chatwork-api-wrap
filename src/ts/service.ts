@@ -1,4 +1,4 @@
-import { Response, ResponseError } from "superagent";
+import { Response } from "superagent";
 import { STATUS_CODE_200 } from "./constants";
 
 export const requestSuccess = <T>(res: Response) => {
@@ -6,10 +6,6 @@ export const requestSuccess = <T>(res: Response) => {
         return res.body as T;
     }
     return null;
-};
-
-export const requestError = (err: ResponseError) => {
-    throw err;
 };
 
 export const objectToQuery = (obj: object & { [key: string]: any }) => {
