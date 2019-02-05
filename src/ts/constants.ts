@@ -8,5 +8,6 @@ export type IconPresetType = "group" | "check" |
     "travel";
 
 export const CHATWORK_TOKEN = "X-ChatWorkToken";
+export const AUTHORIZATION_TOKEN = "Authorization";
 export const BASE_URI = "https://api.chatwork.com/v2/";
 export const STATUS_CODE_200 = 200;
