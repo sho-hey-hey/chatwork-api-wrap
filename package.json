@@ -3,6 +3,7 @@
   "version": "0.2.2",
   "description": "Chatwork api wrapper.",
   "main": "src/js/index.js",
+  "types": "src/typings/index.d.ts",
   "author": "ShoheiOno",
   "license": "MIT",
   "dependencies": {
