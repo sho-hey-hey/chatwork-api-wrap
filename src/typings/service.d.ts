@@ -1,6 +1,4 @@
-import { Response, ResponseError } from "superagent";
-export declare const requestSuccess: <T>(res: Response) => T | null;
-export declare const requestError: (err: ResponseError) => never;
-export declare const objectToQuery: (obj: object & {
-    [key: string]: any;
-}) => string;
+import { AxiosResponse, AxiosError } from "axios";
+export declare const requestSuccess: <T>(res: AxiosResponse<T>) => T | null;
+export declare const requestError: (err: AxiosError | any) => any;
+export declare const objectToQuery: (obj: object & Record<string, any>) => string;

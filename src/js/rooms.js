@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -11,216 +12,467 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const superagent_1 = __importDefault(require("superagent"));
+exports.link = exports.files = exports.tasks = exports.messages = exports.members = exports.deleteWithId = exports.putWithId = exports.getWithId = exports.post = exports.get = void 0;
+const axios_1 = __importDefault(require("axios"));
 const constants_1 = require("./constants");
 const service_1 = require("./service");
 const BASE_ROOMS_URI = `${constants_1.BASE_URI}rooms`;
+/**
+ * Get chat room list.
+ * https://developer.chatwork.com/reference/get-rooms
+ */
 function get(apiToken) {
     return __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(BASE_ROOMS_URI)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+        try {
+            const response = yield axios_1.default.get(BASE_ROOMS_URI, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     });
 }
 exports.get = get;
-function post(apiToken, name, members_admin_ids, options = {}) {
+/**
+ * Create chat room.
+ * https://developer.chatwork.com/reference/post-rooms
+ */
+function post(apiToken, data) {
     return __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .post(BASE_ROOMS_URI)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({ name, members_admin_ids }, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+        try {
+            const response = yield axios_1.default.post(BASE_ROOMS_URI, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     });
 }
 exports.post = post;
+/**
+ * Get chat room info.
+ * https://developer.chatwork.com/reference/get-rooms-room_id
+ */
 function getWithId(apiToken, room_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     });
 }
 exports.getWithId = getWithId;
-function putWithId(apiToken, room_id, options = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .put(`${BASE_ROOMS_URI}/${room_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({}, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+/**
+ * Change chat room info.
+ * https://developer.chatwork.com/reference/put-rooms-room_id
+ */
+function putWithId(apiToken_1, room_id_1) {
+    return __awaiter(this, arguments, void 0, function* (apiToken, room_id, options = {}) {
+        try {
+            const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}`, Object.assign({}, options), {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     });
 }
 exports.putWithId = putWithId;
+/**
+ * Delete chat room.
+ * https://developer.chatwork.com/reference/delete-rooms-room_id
+ */
 function deleteWithId(apiToken, room_id, action_type) {
     return __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .delete(`${BASE_ROOMS_URI}/${room_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery({ action_type }))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+        try {
+            const response = yield axios_1.default.delete(`${BASE_ROOMS_URI}/${room_id}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+                data: {
+                    action_type,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     });
 }
 exports.deleteWithId = deleteWithId;
 exports.members = {
-    get: (apiToken, room_id) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/members`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get chat room member list.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-members
+     */
+    get: (apiToken, room_id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/members`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    put: (apiToken, room_id, members_admin_ids, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .put(`${BASE_ROOMS_URI}/${room_id}/members`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({ members_admin_ids }, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Change chat room members.
+     * https://developer.chatwork.com/reference/put-rooms-room_id-members
+     */
+    put: (apiToken, room_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/members`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
 };
 exports.messages = {
-    get: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/messages?${service_1.objectToQuery(options)}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get chat room messages.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-messages
+     */
+    get: (apiToken_1, room_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, ...args_1], void 0, function* (apiToken, room_id, data = {}) {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/messages?${(0, service_1.objectToQuery)(data)}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    post: (apiToken, room_id, body, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .post(`${BASE_ROOMS_URI}/${room_id}/messages`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({ body }, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Post message to chat room.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-messages
+     */
+    post: (apiToken, room_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.post(`${BASE_ROOMS_URI}/${room_id}/messages`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
     read: {
-        put: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            return superagent_1.default
-                .put(`${BASE_ROOMS_URI}/${room_id}/messages/read`)
-                .set(constants_1.CHATWORK_TOKEN, apiToken)
-                .send(service_1.objectToQuery(Object.assign({}, options)))
-                .then(service_1.requestSuccess)
-                .catch(service_1.requestError);
+        /**
+         * Read message.
+         * https://developer.chatwork.com/reference/put-rooms-room_id-messages-read
+         */
+        put: (apiToken_2, room_id_2, ...args_2) => __awaiter(void 0, [apiToken_2, room_id_2, ...args_2], void 0, function* (apiToken, room_id, data = {}) {
+            try {
+                const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/messages/read`, data, {
+                    headers: {
+                        [constants_1.CHATWORK_TOKEN]: apiToken,
+                    },
+                });
+                return (0, service_1.requestSuccess)(response);
+            }
+            catch (e) {
+                throw (0, service_1.requestError)(e);
+            }
         }),
     },
     unread: {
-        put: (apiToken, room_id, message_id) => __awaiter(this, void 0, void 0, function* () {
-            return superagent_1.default
-                .put(`${BASE_ROOMS_URI}/${room_id}/messages/unread`)
-                .set(constants_1.CHATWORK_TOKEN, apiToken)
-                .send(service_1.objectToQuery({ message_id }))
-                .then(service_1.requestSuccess)
-                .catch(service_1.requestError);
+        /**
+         * Unread message.
+         * https://developer.chatwork.com/reference/put-rooms-room_id-messages-unread
+         */
+        put: (apiToken, room_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/messages/unread`, data, {
+                    headers: {
+                        [constants_1.CHATWORK_TOKEN]: apiToken,
+                    },
+                });
+                return (0, service_1.requestSuccess)(response);
+            }
+            catch (e) {
+                throw (0, service_1.requestError)(e);
+            }
         }),
     },
-    getWithId: (apiToken, room_id, message_id) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get chat message.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-messages-message_id
+     */
+    getWithId: (apiToken, room_id, message_id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    putWithId: (apiToken, room_id, message_id, body) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .put(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery({ body }))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Update chat message body.
+     * https://developer.chatwork.com/reference/put-rooms-room_id-messages-message_id
+     */
+    putWithId: (apiToken, room_id, message_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    deleteWithId: (apiToken, room_id, message_id) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .delete(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Delete chat message.
+     * https://developer.chatwork.com/reference/delete-rooms-room_id-messages-message_id
+     */
+    deleteWithId: (apiToken, room_id, message_id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.delete(`${BASE_ROOMS_URI}/${room_id}/messages/${message_id}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
 };
 exports.tasks = {
-    get: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/tasks?${service_1.objectToQuery(options)}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get task list.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-tasks
+     */
+    get: (apiToken_3, room_id_3, ...args_3) => __awaiter(void 0, [apiToken_3, room_id_3, ...args_3], void 0, function* (apiToken, room_id, data = {}) {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/tasks?${(0, service_1.objectToQuery)(data)}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    post: (apiToken, room_id, body, to_ids, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .post(`${BASE_ROOMS_URI}/${room_id}/tasks`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({ body, to_ids }, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Add task.
+     * https://developer.chatwork.com/reference/post-rooms-room_id-tasks
+     */
+    post: (apiToken, room_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.post(`${BASE_ROOMS_URI}/${room_id}/tasks`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    getWithId: (apiToken, room_id, task_id) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/tasks/${task_id}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get task info.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-tasks-task_id
+     */
+    getWithId: (apiToken, room_id, task_id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/tasks/${task_id}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
+    status: {
+        /**
+         * Update task status.
+         * https://developer.chatwork.com/reference/put-rooms-room_id-tasks-task_id-status
+         */
+        put: (apiToken, room_id, task_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/tasks/${task_id}/status`, data, {
+                    headers: {
+                        [constants_1.CHATWORK_TOKEN]: apiToken,
+                    },
+                });
+                return (0, service_1.requestSuccess)(response);
+            }
+            catch (e) {
+                throw (0, service_1.requestError)(e);
+            }
+        }),
+    },
 };
 exports.files = {
-    get: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/files?${service_1.objectToQuery(options)}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get file list.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-files
+     */
+    get: (apiToken_4, room_id_4, ...args_4) => __awaiter(void 0, [apiToken_4, room_id_4, ...args_4], void 0, function* (apiToken, room_id, data = {}) {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/files?${(0, service_1.objectToQuery)(data)}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    post: (apiToken, room_id, file, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .post(`${BASE_ROOMS_URI}/${room_id}/files`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({ file }, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Upload file.
+     * https://developer.chatwork.com/reference/post-rooms-room_id-files
+     */
+    post: (apiToken, room_id, data) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.post(`${BASE_ROOMS_URI}/${room_id}/files`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    getWithId: (apiToken, room_id, file_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}?${service_1.objectToQuery(options)}`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get file info.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-files-file_id
+     */
+    getWithId: (apiToken_5, room_id_5, file_id_1, ...args_5) => __awaiter(void 0, [apiToken_5, room_id_5, file_id_1, ...args_5], void 0, function* (apiToken, room_id, file_id, options = {}) {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}?${(0, service_1.objectToQuery)(options)}`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
 };
 exports.link = {
-    get: (apiToken, room_id) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .get(`${BASE_ROOMS_URI}/${room_id}/link`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Get invitation link.
+     * https://developer.chatwork.com/reference/get-rooms-room_id-link
+     */
+    get: (apiToken, room_id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/link`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    post: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .post(`${BASE_ROOMS_URI}/${room_id}/link`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({}, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Create invitation link.
+     * https://developer.chatwork.com/reference/post-rooms-room_id-link
+     */
+    post: (apiToken_6, room_id_6, ...args_6) => __awaiter(void 0, [apiToken_6, room_id_6, ...args_6], void 0, function* (apiToken, room_id, data = {}) {
+        try {
+            const response = yield axios_1.default.post(`${BASE_ROOMS_URI}/${room_id}/link`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    put: (apiToken, room_id, options = {}) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .put(`${BASE_ROOMS_URI}/${room_id}/link`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .send(service_1.objectToQuery(Object.assign({}, options)))
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Update invitation link.
+     * https://developer.chatwork.com/reference/put-rooms-room_id-link
+     */
+    put: (apiToken_7, room_id_7, ...args_7) => __awaiter(void 0, [apiToken_7, room_id_7, ...args_7], void 0, function* (apiToken, room_id, data = {}) {
+        try {
+            const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/link`, data, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
-    delete: (apiToken, room_id) => __awaiter(this, void 0, void 0, function* () {
-        return superagent_1.default
-            .delete(`${BASE_ROOMS_URI}/${room_id}/link`)
-            .set(constants_1.CHATWORK_TOKEN, apiToken)
-            .then(service_1.requestSuccess)
-            .catch(service_1.requestError);
+    /**
+     * Delete invitation link.
+     * https://developer.chatwork.com/reference/delete-rooms-room_id-link
+     */
+    delete: (apiToken, room_id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield axios_1.default.delete(`${BASE_ROOMS_URI}/${room_id}/link`, {
+                headers: {
+                    [constants_1.CHATWORK_TOKEN]: apiToken,
+                },
+            });
+            return (0, service_1.requestSuccess)(response);
+        }
+        catch (e) {
+            throw (0, service_1.requestError)(e);
+        }
     }),
 };
