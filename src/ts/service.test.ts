@@ -12,8 +12,8 @@ const createAxiosResponse = <T>(status: number, data: T): AxiosResponse<T> => {
     headers,
     status,
     statusText: "",
-  }
-}
+  };
+};
 
 describe("services", () => {
   describe("requestSuccess", () => {
@@ -38,15 +38,15 @@ describe("services", () => {
   });
   describe("objectToQuery", () => {
     it.each`
-    obj | result
-    ${{}} | ${""}
-    ${{a: 1}} | ${"a=1"}
-    ${{a: 1, b: "2"}} | ${"a=1&b=2"}
-    ${{a: 1, b: 2, c: []}} | ${"a=1&b=2&c="}
-    ${{a: 1, b: 2, c: [1, "2", true]}} | ${"a=1&b=2&c=1%2C2%2Ctrue"}
-    ${{a: 1, b: 2, c: [], d: true}} | ${"a=1&b=2&c=&d=1"}
-    ${{a: 1, b: 2, c: [], d: false}} | ${"a=1&b=2&c=&d=0"}
-    `("$obj tobe \"$result\"", async ({obj, result}) => {
+      obj                                  | result
+      ${{}}                                | ${""}
+      ${{ a: 1 }}                          | ${"a=1"}
+      ${{ a: 1, b: "2" }}                  | ${"a=1&b=2"}
+      ${{ a: 1, b: 2, c: [] }}             | ${"a=1&b=2&c="}
+      ${{ a: 1, b: 2, c: [1, "2", true] }} | ${"a=1&b=2&c=1%2C2%2Ctrue"}
+      ${{ a: 1, b: 2, c: [], d: true }}    | ${"a=1&b=2&c=&d=1"}
+      ${{ a: 1, b: 2, c: [], d: false }}   | ${"a=1&b=2&c=&d=0"}
+    `('$obj tobe "$result"', async ({ obj, result }) => {
       expect(objectToQuery(obj)).toBe(result);
     });
   });
