@@ -12,7 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.link = exports.files = exports.tasks = exports.messages = exports.members = exports.deleteWithId = exports.putWithId = exports.getWithId = exports.post = exports.get = void 0;
+exports.link = exports.files = exports.tasks = exports.messages = exports.members = void 0;
+exports.get = get;
+exports.post = post;
+exports.getWithId = getWithId;
+exports.putWithId = putWithId;
+exports.deleteWithId = deleteWithId;
 const axios_1 = __importDefault(require("axios"));
 const constants_1 = require("./constants");
 const service_1 = require("./service");
@@ -36,7 +41,6 @@ function get(apiToken) {
         }
     });
 }
-exports.get = get;
 /**
  * Create chat room.
  * https://developer.chatwork.com/reference/post-rooms
@@ -56,7 +60,6 @@ function post(apiToken, data) {
         }
     });
 }
-exports.post = post;
 /**
  * Get chat room info.
  * https://developer.chatwork.com/reference/get-rooms-room_id
@@ -76,7 +79,6 @@ function getWithId(apiToken, room_id) {
         }
     });
 }
-exports.getWithId = getWithId;
 /**
  * Change chat room info.
  * https://developer.chatwork.com/reference/put-rooms-room_id
@@ -96,7 +98,6 @@ function putWithId(apiToken_1, room_id_1) {
         }
     });
 }
-exports.putWithId = putWithId;
 /**
  * Delete chat room.
  * https://developer.chatwork.com/reference/delete-rooms-room_id
@@ -119,7 +120,6 @@ function deleteWithId(apiToken, room_id, action_type) {
         }
     });
 }
-exports.deleteWithId = deleteWithId;
 exports.members = {
     /**
      * Get chat room member list.
@@ -196,7 +196,7 @@ exports.messages = {
          * Read message.
          * https://developer.chatwork.com/reference/put-rooms-room_id-messages-read
          */
-        put: (apiToken_2, room_id_2, ...args_2) => __awaiter(void 0, [apiToken_2, room_id_2, ...args_2], void 0, function* (apiToken, room_id, data = {}) {
+        put: (apiToken_1, room_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, ...args_1], void 0, function* (apiToken, room_id, data = {}) {
             try {
                 const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/messages/read`, data, {
                     headers: {
@@ -286,7 +286,7 @@ exports.tasks = {
      * Get task list.
      * https://developer.chatwork.com/reference/get-rooms-room_id-tasks
      */
-    get: (apiToken_3, room_id_3, ...args_3) => __awaiter(void 0, [apiToken_3, room_id_3, ...args_3], void 0, function* (apiToken, room_id, data = {}) {
+    get: (apiToken_1, room_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, ...args_1], void 0, function* (apiToken, room_id, data = {}) {
         try {
             const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/tasks?${(0, service_1.objectToQuery)(data)}`, {
                 headers: {
@@ -358,7 +358,7 @@ exports.files = {
      * Get file list.
      * https://developer.chatwork.com/reference/get-rooms-room_id-files
      */
-    get: (apiToken_4, room_id_4, ...args_4) => __awaiter(void 0, [apiToken_4, room_id_4, ...args_4], void 0, function* (apiToken, room_id, data = {}) {
+    get: (apiToken_1, room_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, ...args_1], void 0, function* (apiToken, room_id, data = {}) {
         try {
             const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/files?${(0, service_1.objectToQuery)(data)}`, {
                 headers: {
@@ -392,7 +392,7 @@ exports.files = {
      * Get file info.
      * https://developer.chatwork.com/reference/get-rooms-room_id-files-file_id
      */
-    getWithId: (apiToken_5, room_id_5, file_id_1, ...args_5) => __awaiter(void 0, [apiToken_5, room_id_5, file_id_1, ...args_5], void 0, function* (apiToken, room_id, file_id, options = {}) {
+    getWithId: (apiToken_1, room_id_1, file_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, file_id_1, ...args_1], void 0, function* (apiToken, room_id, file_id, options = {}) {
         try {
             const response = yield axios_1.default.get(`${BASE_ROOMS_URI}/${room_id}/files/${file_id}?${(0, service_1.objectToQuery)(options)}`, {
                 headers: {
@@ -428,7 +428,7 @@ exports.link = {
      * Create invitation link.
      * https://developer.chatwork.com/reference/post-rooms-room_id-link
      */
-    post: (apiToken_6, room_id_6, ...args_6) => __awaiter(void 0, [apiToken_6, room_id_6, ...args_6], void 0, function* (apiToken, room_id, data = {}) {
+    post: (apiToken_1, room_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, ...args_1], void 0, function* (apiToken, room_id, data = {}) {
         try {
             const response = yield axios_1.default.post(`${BASE_ROOMS_URI}/${room_id}/link`, data, {
                 headers: {
@@ -445,7 +445,7 @@ exports.link = {
      * Update invitation link.
      * https://developer.chatwork.com/reference/put-rooms-room_id-link
      */
-    put: (apiToken_7, room_id_7, ...args_7) => __awaiter(void 0, [apiToken_7, room_id_7, ...args_7], void 0, function* (apiToken, room_id, data = {}) {
+    put: (apiToken_1, room_id_1, ...args_1) => __awaiter(void 0, [apiToken_1, room_id_1, ...args_1], void 0, function* (apiToken, room_id, data = {}) {
         try {
             const response = yield axios_1.default.put(`${BASE_ROOMS_URI}/${room_id}/link`, data, {
                 headers: {
