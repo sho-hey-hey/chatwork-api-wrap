@@ -33,7 +33,7 @@
   },
   "scripts": {
     "preinstall": "bash -c 'if [ -z \"$CI\" ]; then npx only-allow pnpm; fi'",
-    "prepare": "husky install",
+    "prepare": "husky",
     "dist": "rimraf ./src/js/ ./src/typings/ && tsc",
     "watch": "tsc -w",
     "lint": "eslint --color --cache",
