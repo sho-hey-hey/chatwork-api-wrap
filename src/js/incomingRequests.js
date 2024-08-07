@@ -12,7 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteWithId = exports.putWithId = exports.get = void 0;
+exports.get = get;
+exports.putWithId = putWithId;
+exports.deleteWithId = deleteWithId;
 const axios_1 = __importDefault(require("axios"));
 const constants_1 = require("./constants");
 const service_1 = require("./service");
@@ -36,7 +38,6 @@ function get(apiToken) {
         }
     });
 }
-exports.get = get;
 /**
  * Approve incoming request.
  * https://developer.chatwork.com/reference/put-incoming_requests-request_id
@@ -56,7 +57,6 @@ function putWithId(apiToken, request_id) {
         }
     });
 }
-exports.putWithId = putWithId;
 /**
  * Reject incoming request.
  * https://developer.chatwork.com/reference/delete-incoming_requests-request_id
@@ -76,4 +76,3 @@ function deleteWithId(apiToken, request_id) {
         }
     });
 }
-exports.deleteWithId = deleteWithId;
